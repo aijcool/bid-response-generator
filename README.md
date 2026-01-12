@@ -1,119 +1,136 @@
 # Bid Response Generator
 
-A Claude Code plugin for automated bid response document generation. Analyzes RFP documents and generates professional proposal materials.
+A Claude Code skill for automated bid response document generation. Analyzes RFP documents and generates professional proposal materials.
 
 ## Features
 
-- **Requirements Analysis** (Excel) - Structured requirement tracking
-- **Technical Proposal** (Word) - Professional proposal documents
-- **Architecture Diagrams** (Draw.io) - System architecture visualizations
-- **Infrastructure Sizing** (Excel) - Resource planning spreadsheets
-- **Financial Proposal** (Excel) - Pricing and cost breakdowns
+- **Requirements Analysis** (Excel) - Structured requirement tracking with compliance matrix
+- **Technical Proposal** (Word) - Professional proposal documents with TOC
+- **Architecture Diagrams** (Draw.io) - System architecture visualizations with PNG export
+- **Infrastructure Sizing** (Excel) - Resource planning and cost calculations
+- **Financial Proposal** (Excel) - Pricing breakdowns and payment schedules
 
 ## Prerequisites
 
 ### Required Skills
 
-This plugin requires the following skills installed at user level (`~/.claude/skills/`):
+This skill depends on the following skills installed at `~/.claude/skills/`:
 
-| Skill | Purpose |
-|-------|---------|
-| xlsx | Excel creation and editing |
-| docx | Word document creation |
-| drawio | Architecture diagram generation |
+| Skill | Purpose | Repository |
+|-------|---------|------------|
+| xlsx | Excel creation and editing | - |
+| docx | Word document creation | - |
+| drawio | Architecture diagram generation | - |
 
 ### System Dependencies
 
+**Python packages:**
+
 ```bash
-# Python
 pip install pandas openpyxl python-docx defusedxml pillow
+```
 
-# Node.js
+**Node.js packages:**
+
+```bash
 npm install -g docx
+```
 
-# macOS
+**macOS:**
+
+```bash
 brew install --cask libreoffice
 brew install pandoc poppler coreutils
+```
 
-# Linux
+**Linux (Debian/Ubuntu):**
+
+```bash
 sudo apt-get install libreoffice pandoc poppler-utils xvfb
 ```
 
 ## Installation
 
-### From GitHub
+Clone this repository to your Claude Code skills directory:
 
 ```bash
-# Add marketplace
-/plugin marketplace add your-username/bid-response-generator
-
-# Install plugin
-/plugin install bid-response-generator
+git clone https://github.com/aijcool/bid-response-generator.git ~/.claude/skills/bid-response-generator
 ```
 
-### Local Development
+Verify installation by checking dependencies:
 
 ```bash
-# Run with local plugin
-claude --plugin-dir ./bid-response-generator
+# In Claude Code, run:
+/brd --check
 ```
 
 ## Usage
 
 ### Quick Start
 
-1. Create source directory structure in your project:
+1. **Create source directory structure** in your project:
 
 ```bash
 mkdir -p source/{rfp,requirements,technical,architecture,infrastructure,financial}
 ```
 
-2. Place your source materials in the appropriate directories
+2. **Place your source materials** in the appropriate directories (see Source Files section below)
 
-3. Run the command:
+3. **Run the command** in Claude Code:
 
-```bash
+```
 /brd
 ```
 
-4. Review the generated plan and confirm to proceed
+4. **Review the generated plan** and confirm to proceed
 
-5. Find outputs in `BRD/` directory
+5. **Find outputs** in the `BRD/` directory
+
+### Command Options
+
+| Command | Description |
+|---------|-------------|
+| `/brd` | Interactive generation with plan review |
+| `/brd --plan-only` | Generate and display plan without executing |
+| `/brd --check` | Verify dependencies and configuration |
+| `/brd --lang=zh` | Set output language (en/zh/ar) |
 
 ### Directory Structure
 
 ```
 your-project/
-├── source/                      # Input: Your source materials
-│   ├── rfp/                     # RFP documents (PDF/Word/Markdown)
-│   ├── requirements/            # Requirements analysis source
-│   ├── technical/               # Technical proposal source
-│   ├── architecture/            # Architecture descriptions
-│   ├── infrastructure/          # Infrastructure sizing source
-│   └── financial/               # Financial proposal source
+├── source/                          # Input: Your source materials
+│   ├── rfp/                         # RFP/tender documents
+│   │   └── RFP_Document.pdf
+│   ├── requirements/                # Requirements analysis
+│   │   └── requirements_analysis.md
+│   ├── technical/                   # Technical proposal
+│   │   └── technical_proposal.md
+│   ├── architecture/                # Architecture descriptions
+│   │   ├── overall_solution.md
+│   │   ├── platform_architecture.md
+│   │   ├── deployment_architecture.md
+│   │   └── integration_architecture.md
+│   ├── infrastructure/              # Infrastructure sizing
+│   │   └── infrastructure_sizing.md
+│   └── financial/                   # Financial proposal
+│       └── financial_proposal.md
 │
-├── BRD/                         # Output: Generated documents
+├── BRD/                             # Output: Generated documents
 │   ├── 1_Requirements_Analysis.xlsx
 │   ├── 2_Technical_Proposal.docx
 │   ├── 3_Architecture_Diagrams/
+│   │   ├── *.drawio
+│   │   └── images/*.png
 │   ├── 4_Infrastructure_Sizing.xlsx
 │   └── 5_Financial_Proposal.xlsx
 │
-└── .brd-config.json             # Configuration (optional)
+└── .brd-config.json                 # Configuration (optional)
 ```
 
-### Command Options
+## Configuration
 
-```bash
-/brd                    # Interactive generation
-/brd --plan-only        # Generate plan without executing
-/brd --check            # Verify dependencies
-/brd --lang=zh          # Set output language (en/zh/ar)
-```
-
-### Configuration
-
-Create `.brd-config.json` in project root:
+Create `.brd-config.json` in your project root:
 
 ```json
 {
@@ -126,41 +143,98 @@ Create `.brd-config.json` in project root:
 }
 ```
 
-## Supported Formats
+### Configuration Options
 
-### Input Formats
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| projectName | string | required | Project name for document headers |
+| clientName | string | required | Client organization name |
+| companyName | string | required | Your company name |
+| language | string | "en" | Output language (en/zh/ar) |
+| currency | string | "USD" | Currency for financial documents |
+| outputDirectory | string | "BRD" | Output directory name |
 
-| Format | Extension | Support |
-|--------|-----------|---------|
-| PDF | .pdf | Full |
-| Word | .docx | Full |
-| Markdown | .md | Full |
+## Source Files
 
-### Output Formats
+### Supported Input Formats
 
-| Document | Format |
-|----------|--------|
-| Requirements Analysis | Excel (.xlsx) |
-| Technical Proposal | Word (.docx) |
-| Architecture Diagrams | Draw.io (.drawio) + PNG |
-| Infrastructure Sizing | Excel (.xlsx) |
-| Financial Proposal | Excel (.xlsx) |
+| Format | Extension | Notes |
+|--------|-----------|-------|
+| PDF | .pdf | RFP documents |
+| Word | .docx | RFP documents |
+| Markdown | .md | All source content |
+
+### Source File Templates
+
+Template files are located in:
+
+```
+~/.claude/skills/bid-response-generator/skills/brd/templates/
+```
+
+- `requirements_analysis.md` - Requirements source template
+- `technical_proposal.md` - Technical proposal template
+- `infrastructure_sizing.md` - Infrastructure sizing template
+- `financial_proposal.md` - Financial proposal template
+
+## Output Documents
+
+| Document | Format | Sheets/Sections |
+|----------|--------|-----------------|
+| Requirements Analysis | Excel (.xlsx) | Executive Summary, Functional, Non-Functional, Integration, Security, Compliance |
+| Technical Proposal | Word (.docx) | Executive Summary, Company Profile, Solution, Implementation, Integration, PM, Support |
+| Architecture Diagrams | Draw.io + PNG | Overall, Platform, Deployment, Integration |
+| Infrastructure Sizing | Excel (.xlsx) | Summary, Production, Non-Production, Procurement |
+| Financial Proposal | Excel (.xlsx) | Summary, One-time, Recurring, Schedule, Terms |
 
 ## Multi-Language Support
 
-| Language | Code | RTL |
-|----------|------|-----|
+| Language | Code | RTL Support |
+|----------|------|-------------|
 | English | en | No |
-| Chinese | zh | No |
+| Chinese (Simplified) | zh | No |
 | Arabic | ar | Yes |
 
-## Templates
+## Project Structure
 
-The plugin includes professional templates for all document types. Templates can be customized by creating override files in the `templates` configuration.
+```
+bid-response-generator/
+├── README.md
+├── LICENSE
+├── CHANGELOG.md
+├── commands/
+│   └── brd.md              # /brd command definition
+├── skills/
+│   └── brd/
+│       ├── SKILL.md        # Skill documentation
+│       └── templates/      # Source file templates
+└── agents/
+    └── brd-planner/
+        └── AGENT.md        # Planning agent
+```
+
+## Troubleshooting
+
+### Common Issues
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Skill not found | Required skill missing | Install xlsx/docx/drawio to ~/.claude/skills/ |
+| Source not found | source/ directory missing | Run `mkdir -p source/{rfp,requirements,technical,architecture,infrastructure,financial}` |
+| Parse error | Invalid markdown format | Check source file syntax against templates |
+| Permission error | Cannot write output | Check directory write permissions |
+
+### Dependency Check
+
+Run `/brd --check` to verify all dependencies are installed correctly.
 
 ## Contributing
 
-Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
+Contributions are welcome! Please:
+
+1. Fork this repository
+2. Create a feature branch
+3. Submit a pull request
 
 ## License
 

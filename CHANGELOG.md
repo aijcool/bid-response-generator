@@ -5,11 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-01-12
+
+### Changed
+
+- Updated README.md with correct installation instructions
+- Removed non-existent `/plugin marketplace` commands
+- Changed from "plugin" terminology to "skill" for accuracy
+- Added detailed troubleshooting section
+- Added project structure documentation
+- Improved configuration documentation
+
+### Removed
+
+- Removed `.claude-plugin/` directory (marketplace.json, plugin.json) as Claude Code does not currently support plugin marketplace
+
 ## [1.0.0] - 2025-01-12
 
 ### Added
 
-- Initial release of Bid Response Generator plugin
+- Initial release of Bid Response Generator skill
 - `/brd` command for interactive document generation
 - BRD skill with comprehensive documentation
 - Support for 5 document types:
