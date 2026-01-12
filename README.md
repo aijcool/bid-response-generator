@@ -16,11 +16,11 @@ A Claude Code skill for automated bid response document generation. Analyzes RFP
 
 This skill depends on the following skills installed at `~/.claude/skills/`:
 
-| Skill | Purpose | Repository |
-|-------|---------|------------|
-| xlsx | Excel creation and editing | - |
-| docx | Word document creation | - |
-| drawio | Architecture diagram generation | - |
+| Skill | Purpose |
+|-------|---------|
+| xlsx | Excel creation and editing |
+| docx | Word document creation |
+| drawio | Architecture diagram generation |
 
 ### System Dependencies
 
@@ -51,17 +51,48 @@ sudo apt-get install libreoffice pandoc poppler-utils xvfb
 
 ## Installation
 
-Clone this repository to your Claude Code skills directory:
+### Step 1: Clone the repository
 
 ```bash
-git clone https://github.com/aijcool/bid-response-generator.git ~/.claude/skills/bid-response-generator
+git clone https://github.com/aijcool/bid-response-generator.git
+cd bid-response-generator
 ```
 
-Verify installation by checking dependencies:
+### Step 2: Copy files to Claude Code directories
+
+Claude Code requires commands and skills to be placed in separate directories:
 
 ```bash
-# In Claude Code, run:
+# Copy command file
+cp commands/brd.md ~/.claude/commands/
+
+# Copy skill directory
+cp -r skills/brd ~/.claude/skills/
+```
+
+### Step 3: Verify installation
+
+In Claude Code, run:
+
+```
 /brd --check
+```
+
+### Installation Result
+
+After installation, your Claude Code directory should look like:
+
+```
+~/.claude/
+├── commands/
+│   └── brd.md                  # /brd command
+└── skills/
+    ├── brd/                    # BRD skill
+    │   ├── SKILL.md
+    │   └── templates/
+    ├── xlsx/                   # Required dependency
+    ├── docx/                   # Required dependency
+    └── drawio/                 # Required dependency
 ```
 
 ## Usage
@@ -95,7 +126,7 @@ mkdir -p source/{rfp,requirements,technical,architecture,infrastructure,financia
 | `/brd --check` | Verify dependencies and configuration |
 | `/brd --lang=zh` | Set output language (en/zh/ar) |
 
-### Directory Structure
+### Project Directory Structure
 
 ```
 your-project/
@@ -166,10 +197,10 @@ Create `.brd-config.json` in your project root:
 
 ### Source File Templates
 
-Template files are located in:
+After installation, template files are located at:
 
 ```
-~/.claude/skills/bid-response-generator/skills/brd/templates/
+~/.claude/skills/brd/templates/
 ```
 
 - `requirements_analysis.md` - Requirements source template
@@ -195,7 +226,7 @@ Template files are located in:
 | Chinese (Simplified) | zh | No |
 | Arabic | ar | Yes |
 
-## Project Structure
+## Repository Structure
 
 ```
 bid-response-generator/
@@ -203,14 +234,14 @@ bid-response-generator/
 ├── LICENSE
 ├── CHANGELOG.md
 ├── commands/
-│   └── brd.md              # /brd command definition
+│   └── brd.md              # -> Copy to ~/.claude/commands/
 ├── skills/
 │   └── brd/
-│       ├── SKILL.md        # Skill documentation
-│       └── templates/      # Source file templates
+│       ├── SKILL.md        # -> Copy to ~/.claude/skills/brd/
+│       └── templates/
 └── agents/
     └── brd-planner/
-        └── AGENT.md        # Planning agent
+        └── AGENT.md        # Planning agent (reference only)
 ```
 
 ## Troubleshooting
@@ -219,14 +250,23 @@ bid-response-generator/
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| Skill not found | Required skill missing | Install xlsx/docx/drawio to ~/.claude/skills/ |
+| `/brd` command not found | Command not installed | Copy `commands/brd.md` to `~/.claude/commands/` |
+| Skill not found | Skill not installed | Copy `skills/brd/` to `~/.claude/skills/` |
+| Required skill missing | xlsx/docx/drawio not installed | Install required skills to `~/.claude/skills/` |
 | Source not found | source/ directory missing | Run `mkdir -p source/{rfp,requirements,technical,architecture,infrastructure,financial}` |
-| Parse error | Invalid markdown format | Check source file syntax against templates |
-| Permission error | Cannot write output | Check directory write permissions |
 
 ### Dependency Check
 
 Run `/brd --check` to verify all dependencies are installed correctly.
+
+## Uninstall
+
+To remove this skill:
+
+```bash
+rm ~/.claude/commands/brd.md
+rm -rf ~/.claude/skills/brd
+```
 
 ## Contributing
 
